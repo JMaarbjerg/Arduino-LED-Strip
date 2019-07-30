@@ -10,6 +10,8 @@
 #define BLUEPOT 0
 
 #define FADESPEED 5     // make this higher to slow down
+
+bool firstLoop = true;
  
 void setup() {
   pinMode(REDPIN, OUTPUT);
@@ -24,12 +26,16 @@ void loop(){
   fade();
   }
  
-void startDisco(){
-  //Set color to violet
-  analogWrite(REDPIN, 256);
-  analogWrite(BLUEPIN, 256);
-  delay(FADESPEED};
+
 void disco(){
+    //Set color to violet on first loop
+    if(firstLoop){
+    analogWrite(REDPIN, 256);
+    analogWrite(BLUEPIN, 256);
+    firstLoop = false;
+    delay(FADESPEED);    
+}
+    
     //Set color to red
     analogWrite(BLUEPIN, 0);
     delay(FADESPEED);
