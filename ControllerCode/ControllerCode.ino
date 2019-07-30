@@ -8,6 +8,9 @@
 #define REDPOT 1
 #define GREENPOT 2
 #define BLUEPOT 0
+#define manuSwitch #
+#define fadeButton #
+#define discoButton #
 
 #define FADESPEED 5     // make this higher to slow down
 
@@ -20,10 +23,21 @@ void setup() {
   pinMode(REDPOT, INPUT);
   pinMode(GREENPOT, INPUT);
   pinMode(BLUEPOT, INPUT);
+  pinMode(manuSwitch, INPUT);
+  pinMode(fadeButton, INPUT);
+  pinMode(discoButton, INPUT);
 }
 
 void loop(){
-  fade();
+  if(manuSwitch == LOW || fadeButton == HIGH) {
+    fade();
+  }
+  else if(manuSwitch == LOW || discoButton == HIGH) {
+    disco();
+  }
+  else{
+    //Manual control
+  }
   }
  
 
