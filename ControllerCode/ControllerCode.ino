@@ -8,13 +8,19 @@
 #define REDPOT 1
 #define GREENPOT 2
 #define BLUEPOT 0
-#define manuSwitch #
-#define fadeButton #
-#define discoButton #
+#define manuSwitch 10
+#define fadeDiscoState 11
 
 #define FADESPEED 5     // make this higher to slow down
 
 bool firstLoop = true;
+int redValue = 0;
+int greenValue = 0;
+int blueValue = 0;
+
+int buttonState = 0;
+int buttonPushCounter = 0;
+int lastButtonState = 0;
  
 void setup() {
   pinMode(REDPIN, OUTPUT);
@@ -24,19 +30,29 @@ void setup() {
   pinMode(GREENPOT, INPUT);
   pinMode(BLUEPOT, INPUT);
   pinMode(manuSwitch, INPUT);
-  pinMode(fadeButton, INPUT);
-  pinMode(discoButton, INPUT);
+  pinMode(fadeDiscoState, INPUT);
 }
 
 void loop(){
-  if(manuSwitch == LOW || fadeButton == HIGH) {
-    fade();
+  if(manuSwitch == LOW) {
+    
+    if(buttonPushCounter % 2 == 0){
+      fade();
+    }
+    else {
+      disco();
+    }
   }
-  else if(manuSwitch == LOW || discoButton == HIGH) {
-    disco();
-  }
+
   else{
-    //Manual control
+    redValue = analogRead(REDPOT);
+    //analogWrite(REDPIN, redValue);
+    
+    greenValue = analogRead(GREENPOT);
+    //analogWrite(GREENPIN, greenValue);
+    
+    blueValue = analogRead(BLUEPOT);
+    //analogWrite(BLUEPIN, blueValue);
   }
   }
  
