@@ -8,8 +8,12 @@
 #define REDPOT A1
 #define GREENPOT A2
 #define BLUEPOT A0
-#define manuSwitch 10
-#define fadeDiscoState 11
+#define manuButton 7
+#define fadeButton 10
+#define autoLED 8
+#define manualLED 9
+#define fadeLED 11
+#define discoLED 12
 
 #define FADESPEED 5     // make this higher to slow down
 
@@ -35,25 +39,61 @@ void setup() {
   pinMode(REDPOT, INPUT);
   pinMode(GREENPOT, INPUT);
   pinMode(BLUEPOT, INPUT);
-  pinMode(manuSwitch, INPUT);
-  pinMode(fadeDiscoState, INPUT);
+  
+  pinMode(manuButton, INPUT);
+  pinMode(fadeButton, INPUT);
+  pinMode(autoLED, OUTPUT);
+  pinMode(manualLED, OUTPUT);
+  pinMode(fadeLED, OUTPUT);
+  pinMode(discoLED, OUTPUT);
   
   //For debugging with the console
   Serial.begin(9600);
 }
 
 void loop(){
-  if(manuSwitch == LOW) {
-    
-    if(butPushCounterDF % 2 == 0){
-      fade();
-    }
-    else {
-      disco();
-    }
-  }
+  butStateMA = digitalRead(manuButton);
+  butStateDF = digitalRead(fadeButton);
 
+  //Control for the MA part
+  if(butStateMA != lastButStateMA) {
+    if(lastButStateMA == HIGH){
+      butPushCounterMA++;
+    }
+    delay(50);    
+  }
+  lastButStateMA = butStateMA;
+  if(butPushCounterMA % 2 == 0){
+    digitalWrite(manualLED, HIGH);
+    digitalWrite(autoLED, LOW);
+    manual();
+  }
   else{
+    digitalWrite(manualLED, LOW);
+    digitalWrite(autoLED, HIGH);
+      //Control for the DF part
+      if(butStateDF != lastButStateDF) {
+        if(lastButStateDF == HIGH){
+          butPushCounterDF++;
+        }
+        delay(50);    
+      }
+      lastButStateDF = butStateDF;
+      if(butPushCounterDF % 2 == 0){
+        digitalWrite(fadeLED, HIGH);
+        digitalWrite(discoLED, LOW);
+        fade();
+      }
+      else{
+        digitalWrite(fadeLED, LOW);
+        digitalWrite(discoLED, HIGH);
+        disco();
+      }
+  }
+}
+
+     
+void manual(){
     redValue = analogRead(REDPOT);
     //analogWrite(REDPIN, redValue);
     
@@ -65,10 +105,7 @@ void loop(){
     float tempBlue = blueValue * (256.0 / 1023.0);
     //analogWrite(BLUEPIN, blueValue);
     Serial.println(tempBlue);
-    
-  }
-  }
- 
+}
 
 void disco(){
     //Set color to violet on first loop
