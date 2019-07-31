@@ -18,9 +18,15 @@ int redValue = 0;
 int greenValue = 0;
 int blueValue = 0;
 
-int buttonState = 0;
-int buttonPushCounter = 0;
-int lastButtonState = 0;
+//MA stands for Manual/Auto
+int butStateMA = 0;
+int butPushCounterMA = 0;
+int lastButStateMA = 0;
+
+//DF stands for Disco/Fade
+int butStateDF = 0;
+int butPushCounterDF = 0;
+int lastButStateDF = 0;
  
 void setup() {
   pinMode(REDPIN, OUTPUT);
@@ -39,7 +45,7 @@ void setup() {
 void loop(){
   if(manuSwitch == LOW) {
     
-    if(buttonPushCounter % 2 == 0){
+    if(butPushCounterDF % 2 == 0){
       fade();
     }
     else {
