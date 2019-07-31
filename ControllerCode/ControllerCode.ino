@@ -71,6 +71,7 @@ void loop(){
   else{
     digitalWrite(manualLED, LOW);
     digitalWrite(autoLED, HIGH);
+      
       //Control for the DF part
       if(butStateDF != lastButStateDF) {
         if(lastButStateDF == HIGH){
@@ -95,16 +96,18 @@ void loop(){
      
 void manual(){
     redValue = analogRead(REDPOT);
-    //analogWrite(REDPIN, redValue);
+    float tempRed = redValue * (256.0 / 1023.0);
+    analogWrite(REDPIN, tempRed);
     
     
     greenValue = analogRead(GREENPOT);
-    //analogWrite(GREENPIN, greenValue);
+    float tempGreen = greenValue * (256.0 / 1023.0);
+    analogWrite(GREENPIN, tempGreen);
     
     blueValue = analogRead(BLUEPOT);
     float tempBlue = blueValue * (256.0 / 1023.0);
-    //analogWrite(BLUEPIN, blueValue);
-    Serial.println(tempBlue);
+    analogWrite(BLUEPIN, tempBlue);
+    //Serial.println(tempBlue);
 }
 
 void disco(){
