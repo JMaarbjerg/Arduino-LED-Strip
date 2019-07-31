@@ -5,9 +5,9 @@
 #define REDPIN 5
 #define GREENPIN 6
 #define BLUEPIN 3
-#define REDPOT 1
-#define GREENPOT 2
-#define BLUEPOT 0
+#define REDPOT A1
+#define GREENPOT A2
+#define BLUEPOT A0
 #define manuSwitch 10
 #define fadeDiscoState 11
 
@@ -31,6 +31,9 @@ void setup() {
   pinMode(BLUEPOT, INPUT);
   pinMode(manuSwitch, INPUT);
   pinMode(fadeDiscoState, INPUT);
+  
+  //For debugging with the console
+  Serial.begin(9600);
 }
 
 void loop(){
@@ -48,11 +51,15 @@ void loop(){
     redValue = analogRead(REDPOT);
     //analogWrite(REDPIN, redValue);
     
+    
     greenValue = analogRead(GREENPOT);
     //analogWrite(GREENPIN, greenValue);
     
     blueValue = analogRead(BLUEPOT);
+    float tempBlue = blueValue * (256.0 / 1023.0);
     //analogWrite(BLUEPIN, blueValue);
+    Serial.println(tempBlue);
+    
   }
   }
  
