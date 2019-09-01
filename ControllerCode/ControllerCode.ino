@@ -8,10 +8,10 @@
 #define REDPOT A1
 #define GREENPOT A2
 #define BLUEPOT A0
-#define manuState 7
-#define autoState 8
-#define fadeState 9
-#define discoState 10
+#define manuSwitch 7
+#define autoSwitch 8
+#define fadeSwitch 9
+#define discoSwitch 10
 
 
 #define FADESPEED 5     // make this higher to slow down
@@ -20,6 +20,10 @@ bool firstLoop = true;
 int redValue = 0;
 int greenValue = 0;
 int blueValue = 0;
+bool manuState;
+bool autoState;
+bool fadeState;
+bool discoState;
 
 void setup() {
   pinMode(REDPIN, OUTPUT);
@@ -40,22 +44,24 @@ void setup() {
 
 void loop(){
   manuState = digitalRead(manuSwitch);
-  autoState = digitalRead(fadeSwitch);
+  autoState = digitalRead(autoSwitch);
   fadeState = digitalRead(manuSwitch);
   discoState = digitalRead(fadeSwitch);
+  Serial.println(manuState);
+  //Serial.println(autoState);
   
   //Control for the MA part
   if(manuState == HIGH) {
-    manual();
-    Serial.println("manu");
+    //manual();
+    //Serial.println("manu");
   }
   else if (autoState == HIGH && fadeState == HIGH){
-    fade();
+    //fade();
     Serial.println("AutoFade");
   }
   else if (autoState == HIGH && discoState == HIGH){
-    disco();
-    Serial.println("AutoDisco");
+    //disco();
+    //Serial.println("AutoDisco");
   }
 }
      
