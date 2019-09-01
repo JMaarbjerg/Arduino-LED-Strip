@@ -47,21 +47,21 @@ void loop(){
   autoState = digitalRead(autoSwitch);
   fadeState = digitalRead(manuSwitch);
   discoState = digitalRead(fadeSwitch);
-  Serial.println(manuState);
+  //Serial.println(manuState);
   //Serial.println(autoState);
   
   //Control for the MA part
-  if(manuState == HIGH) {
+  if(manuState == HIGH && autoState == LOW) {
     //manual();
-    //Serial.println("manu");
+    Serial.println("manu");
   }
-  else if (autoState == HIGH && fadeState == HIGH){
+  else if (autoState == HIGH && manuState == LOW && fadeState == HIGH && discoState == LOW){
     //fade();
     Serial.println("AutoFade");
   }
-  else if (autoState == HIGH && discoState == HIGH){
+  else if (autoState == HIGH && manuState == LOW && fadeState == LOW && discoState == HIGH){
     //disco();
-    //Serial.println("AutoDisco");
+    Serial.println("AutoDisco");
   }
 }
      
