@@ -8,12 +8,11 @@
 #define REDPOT A1
 #define GREENPOT A2
 #define BLUEPOT A0
-#define manuButton 7
-#define fadeButton 10
-#define autoLED 8
-#define manualLED 9
-#define fadeLED 11
-#define discoLED 12
+#define manuState 7
+#define autoState 8
+#define fadeState 9
+#define discoState 10
+
 
 #define FADESPEED 5     // make this higher to slow down
 
@@ -22,16 +21,6 @@ int redValue = 0;
 int greenValue = 0;
 int blueValue = 0;
 
-//MA stands for Manual/Auto
-int butStateMA = 0;
-int butPushCounterMA = 0;
-int lastButStateMA = 0;
-
-//DF stands for Disco/Fade
-int butStateDF = 0;
-int butPushCounterDF = 0;
-int lastButStateDF = 0;
- 
 void setup() {
   pinMode(REDPIN, OUTPUT);
   pinMode(GREENPIN, OUTPUT);
@@ -40,65 +29,37 @@ void setup() {
   pinMode(GREENPOT, INPUT);
   pinMode(BLUEPOT, INPUT);
   
-  pinMode(manuButton, INPUT);
-  pinMode(fadeButton, INPUT);
-  pinMode(autoLED, OUTPUT);
-  pinMode(manualLED, OUTPUT);
-  pinMode(fadeLED, OUTPUT);
-  pinMode(discoLED, OUTPUT);
+  pinMode(manuSwitch, INPUT);
+  pinMode(autoSwitch, INPUT);
+  pinMode(fadeSwitch, INPUT);
+  pinMode(discoSwitch, INPUT);
   
   //For debugging with the console
   Serial.begin(9600);
 }
 
 void loop(){
-  butStateMA = digitalRead(manuButton);
-  butStateDF = digitalRead(fadeButton);
-
+  manuState = digitalRead(manuSwitch);
+  autoState = digitalRead(fadeSwitch);
+  fadeState = digitalRead(manuSwitch);
+  discoState = digitalRead(fadeSwitch);
+  
   //Control for the MA part
-  if(butStateMA != lastButStateMA) {
-    if(lastButStateMA == HIGH){
-      butPushCounterMA++;
-    }
-    delay(50);    
-  }
-  lastButStateMA = butStateMA;
-  if(butPushCounterMA % 2 == 0){
-    digitalWrite(manualLED, HIGH);
-    digitalWrite(autoLED, LOW);
+  if(manuState == HIGH) {
     manual();
   }
-  else{
-    digitalWrite(manualLED, LOW);
-    digitalWrite(autoLED, HIGH);
-      
-      //Control for the DF part
-      if(butStateDF != lastButStateDF) {
-        if(lastButStateDF == HIGH){
-          butPushCounterDF++;
-        }
-        delay(50);    
-      }
-      lastButStateDF = butStateDF;
-      if(butPushCounterDF % 2 == 0){
-        digitalWrite(fadeLED, HIGH);
-        digitalWrite(discoLED, LOW);
-        fade();
-      }
-      else{
-        digitalWrite(fadeLED, LOW);
-        digitalWrite(discoLED, HIGH);
-        disco();
-      }
+  else if (autoState == HIGH && fadeState == HIGH){
+    fade();
+  }
+  else if (autoState == HIGH && discoState == HIGH){
+    disco();
   }
 }
-
      
 void manual(){
     redValue = analogRead(REDPOT);
     float tempRed = redValue * (256.0 / 1023.0);
     analogWrite(REDPIN, tempRed);
-    
     
     greenValue = analogRead(GREENPOT);
     float tempGreen = greenValue * (256.0 / 1023.0);
