@@ -47,12 +47,15 @@ void loop(){
   //Control for the MA part
   if(manuState == HIGH) {
     manual();
+    Serial.println("manu");
   }
   else if (autoState == HIGH && fadeState == HIGH){
     fade();
+    Serial.println("AutoFade");
   }
   else if (autoState == HIGH && discoState == HIGH){
     disco();
+    Serial.println("AutoDisco");
   }
 }
      
