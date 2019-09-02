@@ -14,8 +14,8 @@
 #define discoSwitch 10
 
 
-#define FADESPEED 5     // make this higher to slow down
 
+int FADESPEED;
 bool firstLoop = true;
 int redValue = 0;
 int greenValue = 0;
@@ -38,6 +38,7 @@ void setup() {
   pinMode(fadeSwitch, INPUT);
   pinMode(discoSwitch, INPUT);
   
+  FADESPEED = 5;  
   //For debugging with the console
   Serial.begin(9600);
 }
@@ -53,15 +54,21 @@ void loop(){
   //Control for the MA part
   if(manuState == HIGH) {
     //manual();
-    Serial.println("manu");
+    //Serial.println("manu");
   }
   else if (autoState == HIGH && fadeState == HIGH){
-    //fade();
-    Serial.println("AutoFade");
+    int tempSpeed = analogRead(BLUEPOT);
+    FADESPEED = tempSpeed * (20.0 / 1023.0);
+    
+    fade();
+    //Serial.println(FADESPEED);
   }
   else if (autoState == HIGH && discoState == HIGH){
-    //disco();
-    Serial.println("AutoDisco");
+    int tempSpeed = analogRead(BLUEPOT);
+    FADESPEED = tempSpeed * (20.0 / 1023.0);
+        
+    disco();
+    //Serial.println("AutoDisco");
   }
 }
      
